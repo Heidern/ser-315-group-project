@@ -5,7 +5,7 @@
 create table user (
   id bigint not null identity,
   created date not null default (CURRENT_DATE),
-  user_type varchar(15) not null,
+  type varchar(15) not null,
   username varchar(255) not null,
   first_name varchar(255),
   last_name varchar(255),
@@ -33,9 +33,28 @@ create table course (
 create table class (
   id bigint not null identity,
   course_id bigint not null,
-  number int not null
+  number int not null,
+  constraint pk_class primary key (id)
 );
 
+create table class_student (
+  class_id bigint not null,
+  student_id bigint not null
+);
+
+create table class_instructor (
+  class_id bigint not null,
+  instructor_id bigint not null
+);
+
+create table note (
+  id bigint not null identity,
+  student_id bigint not null,
+  class_id bigint not null,
+  title varchar(255),
+  contents varchar(max),
+  constraint pk_note primary key (id)
+);
 
 -- alter table computer add constraint fk_computer_company_1 foreign key (company_id) references company (id) on delete restrict on update restrict;
 --create index ix_computer_company_1 on computer (company_id);

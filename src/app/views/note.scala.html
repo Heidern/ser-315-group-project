@@ -1,5 +1,12 @@
-@(message: String)
+@(note : viewmodels.Note)
 
 @main("Team S - Education Portal") {
-    @message
+    <ul>
+    @for(noteTitle <- note.NoteTitles) {
+        <li>@noteTitle.Title</li>
+    }
+    </ul>
+    <div>
+        @note.CurrentNoteContents
+    </div>
 }

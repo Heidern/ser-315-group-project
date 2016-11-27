@@ -10,7 +10,7 @@ import java.util.List;
  */
 @Entity
 @DiscriminatorValue(value="faculty")
-public class Faculty extends User {
+public class Instructor extends User {
 
     @ManyToMany(mappedBy="instructors")
     private List<Class> classes;

@@ -22,7 +22,7 @@ import play.data.validation.*;
  */
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="user_type")
+@DiscriminatorColumn(name="type")
 public abstract class User {
 
     @Id

@@ -84,4 +84,8 @@ public class Course {
     public void setPrerequisites(List<Course> prerequisites) {
         this.prerequisites = prerequisites;
     }
+
+    public String toString () {
+        return subject.getAbbreviation() + " " + courseNumber + " - " + title;
+    }
 }
