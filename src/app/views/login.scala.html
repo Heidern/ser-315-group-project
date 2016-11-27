@@ -1,0 +1,15 @@
+@(login: viewmodels.Login)
+@import views.html.helper._
+
+@main("Team S - Education Portal") {
+    <h2 class="form-signin-heading">Log in</h2>
+    @form(action = routes.AuthenticationController.loggingIn()) {
+
+        @for(user <- login.Students) {
+            <div class="radio">
+            <label><input type="radio" name="userId" id="userId" value="@user.UserId">@user.Username</label>
+            </div>
+        }
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    }
+}

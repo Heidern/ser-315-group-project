@@ -1,12 +1,32 @@
 @(note : viewmodels.Note)
 
-@main("Team S - Education Portal") {
-    <ul>
-    @for(noteTitle <- note.NoteTitles) {
-        <li>@noteTitle.Title</li>
-    }
-    </ul>
-    <div>
-        @note.CurrentNoteContents
+@stylesheet = {
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/notes.css")">
+}
+
+@main("Team S - Education Portal", stylesheet) {
+    <div class="row">
+        <div class="col-md-3">
+            <div class="page-header">
+                <h3>My Notes</h3>
+            </div>
+            <ul class="nav nav-pills nav-stacked">
+            @for(noteTitle <- note.NoteTitles) {
+                @if(noteTitle.Id == note.CurrentNoteId) {
+                    <li class="active"><a href="#">@noteTitle.Title</a></li>
+                } else {
+                    <li><a href="@routes.NoteController.studentNote(noteTitle.ClassId, noteTitle.Id)">@noteTitle.Title</a></li>
+                }
+            }
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <div class="page-header">
+                <h3>@note.CurrentNoteTitle</h3>
+            </div>
+            <p>
+            @note.CurrentNoteContents
+            </p>
+        </div>
     </div>
 }

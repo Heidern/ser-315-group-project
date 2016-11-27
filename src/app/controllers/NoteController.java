@@ -1,18 +1,14 @@
 package controllers;
 
-import com.avaje.ebean.Ebean;
 import com.avaje.ebean.EbeanServer;
-import com.avaje.ebean.Transaction;
-import play.Environment;
-import play.mvc.*;
-import play.data.*;
-import static play.data.Form.*;
-
-import models.*;
+import models.Note;
+import models.Student;
+import play.data.FormFactory;
+import play.mvc.Controller;
+import play.mvc.Result;
 import viewmodels.NoteTitleAndId;
 
 import javax.inject.Inject;
-import javax.persistence.PersistenceException;
 import java.util.List;
 
 /**
@@ -58,15 +54,30 @@ public class NoteController extends Controller {
         return ok(views.html.index.render (sb.toString()));
     }
 
-    public Result note() {
+    public Result allStudentNotes (long classId) {
 
-        long classId = Long.parseLong(request().getQueryString("classId"));
-        long studentId = Long.parseLong(request().getQueryString("studentId"));
-        long noteId = Long.parseLong(request().getQueryString("noteId"));
+        long studentId = Long.parseLong(session("userId"));
 
+        viewmodels.Note note = getNote (classId, studentId, 0);
+
+        return ok(views.html.note.render(note));
+
+    }
+
+    public Result studentNote (long classId, long noteId) {
+
+        long studentId = Long.parseLong(session("userId"));
+
+        viewmodels.Note note = getNote (classId, studentId, noteId);
+
+        return ok(views.html.note.render(note));
+
+    }
+
+    private viewmodels.Note getNote (long classId, long studentId, long noteId) {
         List<Note> notes = ebeanServer
                 .find(Note.class)
-                .select("id, title")
+                .select("id, class_id, title")
                 .where()
                 .conjunction()
                 .eq("student_id", studentId)
@@ -74,27 +85,25 @@ public class NoteController extends Controller {
                 .endJunction()
                 .findList();
 
-        Note currentNote = ebeanServer
-                .find(Note.class)
-                .where()
-                .idEq(noteId)
-                .findUnique();
-
         viewmodels.Note noteViewModel = new viewmodels.Note ();
 
         for (Note n : notes) {
             NoteTitleAndId titleAndId = new NoteTitleAndId();
 
+            titleAndId.ClassId = n.getStudentClass().getId();
             titleAndId.Id = n.getId();
             titleAndId.Title = n.getTitle();
 
             noteViewModel.NoteTitles.add (titleAndId);
+
+            if (n.getId() == noteId || (noteId == 0 && noteViewModel.CurrentNoteId == 0)) {
+                noteViewModel.CurrentNoteId = n.getId();
+                noteViewModel.CurrentNoteTitle = n.getTitle();
+                noteViewModel.CurrentNoteContents = n.getContents();
+            }
         }
 
-        noteViewModel.CurrentNoteId = currentNote.getId ();
-        noteViewModel.CurrentNoteContents = currentNote.getContents();
-
-        return ok(views.html.note.render(noteViewModel));
+        return noteViewModel;
     }
 }
             

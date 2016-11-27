@@ -2,9 +2,11 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Default path will just redirect to the computer list
-GET     /                           controllers.NoteController.index()
-GET     /notes                      controllers.NoteController.note()
+# Default path will just redirect to the notes page
+GET     /                               controllers.AuthenticationController.login()
+POST    /login                          controllers.AuthenticationController.loggingIn()
+GET     /class/:classId/notes           controllers.NoteController.allStudentNotes(classId:Long)
+GET     /class/:classId/notes/:noteId   controllers.NoteController.studentNote(classId:Long, noteId:Long)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file                   controllers.Assets.at(path="/public", file)

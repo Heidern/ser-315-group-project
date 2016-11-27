@@ -9,6 +9,7 @@ import java.util.List;
 public class Note {
     public List <NoteTitleAndId> NoteTitles;
     public long CurrentNoteId;
+    public String CurrentNoteTitle;
     public String CurrentNoteContents;
 
     public Note () {
