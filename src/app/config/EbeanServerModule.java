@@ -1,7 +1,9 @@
-package modules;
+package config;
+import com.avaje.ebean.EbeanServer;
 import com.google.inject.*;
-public class EbeanServerDi extends AbstractModule {
+public class EbeanServerModule extends AbstractModule {
+    @Override
     public void configure() {
-        //your bindings should come here
+        bind(EbeanServer.class).toProvider(EbeanServerProvider.class);
     }
 }

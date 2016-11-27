@@ -1,7 +1,15 @@
 package config;
 
-/**
- * Created by scarneiro on 11/26/2016.
- */
-public class EbeanServerProvider {
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.EbeanServer;
+import com.google.inject.Provider;
+
+public class EbeanServerProvider implements Provider<EbeanServer> {
+
+    @Override
+    public EbeanServer get() {
+
+        // EbeanServer configured by ebean.properties
+        return Ebean.getDefaultServer();
+    }
 }
